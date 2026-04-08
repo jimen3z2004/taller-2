@@ -1,7 +1,12 @@
 productos = []
+historial_acciones = []
+
+def registrar_accion(accion):
+    from datetime import datetime
+    ahora = datetime.now().strftime("%H:%M:%S")
+    historial_acciones.append(f"[{ahora}] {accion}")
 
 def leer_float_positivo(mensaje):
-    """Solicita un numero decimal positivo al usuario."""
     while True:
         entrada = input(mensaje).strip()
         try:
@@ -13,9 +18,7 @@ def leer_float_positivo(mensaje):
         except ValueError:
             print("Entrada no valida. Debes escribir un numero.")
 
-
 def leer_int_positivo(mensaje):
-    """Solicita un numero entero positivo al usuario."""
     while True:
         entrada = input(mensaje).strip()
         try:
@@ -27,36 +30,29 @@ def leer_int_positivo(mensaje):
         except ValueError:
             print("Entrada no valida. Debes escribir un numero entero.")
 
-
 def agregar_producto(lista_productos):
     print("\n--- Agregar producto ---")
     nombre = input("Nombre del producto: ").strip()
-
     if not nombre:
         print("El nombre no puede estar vacio.")
         return
-
     precio = leer_float_positivo("Precio del producto: ")
     cantidad = leer_int_positivo("Cantidad: ")
-
     producto = {
         "nombre": nombre,
         "precio": precio,
         "cantidad": cantidad,
         "subtotal": precio * cantidad,
     }
-
     lista_productos.append(producto)
+    registrar_accion(f"Agregado {nombre} (${precio} x {cantidad})")
     print(f"Producto '{nombre}' agregado correctamente.")
-
 
 def mostrar_productos(lista_productos):
     print("\n--- Lista de productos ---")
-
     if not lista_productos:
         print("No hay productos registrados.")
         return
-
     for i, producto in enumerate(lista_productos, start=1):
         print(
             f"{i}. {producto['nombre']} | "
@@ -67,35 +63,27 @@ def mostrar_productos(lista_productos):
 
 def calcular_total(lista_productos):
     print("\n--- Total de la compra ---")
-
     if not lista_productos:
         print("No hay productos para calcular.")
         return
-
     total = 0
     for producto in lista_productos:
         total += producto["subtotal"]
-
     print(f"El total de la compra es: ${total:.2f}")
 
 def filtrar_productos_por_precio(lista_productos):
     print("\n--- Filtrar productos por precio ---")
-
     if not lista_productos:
         print("No hay productos registrados.")
         return
-
     precio_minimo = leer_float_positivo("Mostrar productos con precio mayor a: ")
-
     encontrados = []
     for producto in lista_productos:
         if producto["precio"] > precio_minimo:
             encontrados.append(producto)
-
     if not encontrados:
         print("No se encontraron productos que cumplan la condicion.")
         return
-
     print(f"Productos con precio mayor a ${precio_minimo:.2f}:")
     for i, producto in enumerate(encontrados, start=1):
         print(
@@ -116,7 +104,6 @@ def main():
     while True:
         mostrar_menu()
         opcion = input("Selecciona una opcion: ").strip()
-
         if opcion == "1":
             agregar_producto(productos)
         elif opcion == "2":
@@ -131,6 +118,5 @@ def main():
         else:
             print("Opcion no valida. Intenta nuevamente.")
 
-
-if __name__ == "__main__":
+if _name_ == "_main_":
     main()
