@@ -106,7 +106,5 @@ def main():
         else:
             print("Opción no válida. Intenta nuevamente.")
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     main()
-    print  ("programa finalizado")
-    
